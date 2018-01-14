@@ -8,6 +8,92 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <RelativePanel Name="Florida" Grid.Column="0"  Loaded="Florida_Loaded">
+            <RelativePanel.Background>
+                <ImageBrush ImageSource="Assets/weather/10n.png" Stretch="UniformToFill"/>
+            </RelativePanel.Background>
+            <Rectangle RelativePanel.AlignHorizontalCenterWithPanel="True" 
+                       RelativePanel.AlignVerticalCenterWithPanel="True" 
+                       RelativePanel.AlignTopWithPanel="True"
+                       RelativePanel.AlignBottomWithPanel="True"
+                       RelativePanel.AlignLeftWithPanel="True"
+                       RelativePanel.AlignRightWithPanel="True"
+                       MinWidth="100"
+                       Fill="WhiteSmoke"
+                       Opacity=".4"
+                       Margin="50,150,50,150" />
+            <TextBlock Name="flName" 
+                       RelativePanel.AlignHorizontalCenterWithPanel="True" 
+                       RelativePanel.AlignVerticalCenterWithPanel="True" 
+                       Margin="0,-150,0,0"
+                       Text="St.Pete" FontSize="32" FontWeight="Bold"/>
+            <TextBlock Name="flTemp"
+                       RelativePanel.Below="flName"
+                       RelativePanel.AlignHorizontalCenterWithPanel="True" FontSize="24"/>
+            <TextBlock Name="flHumidity"
+                       Text="Humidity"
+                       RelativePanel.Below="flTemp"
+                       RelativePanel.AlignHorizontalCenterWithPanel="True"
+                       FontSize="24"/>
+            <TextBlock Name="flCondition"
+                       Text="idk gross maybe?"
+                       RelativePanel.Below="flHumidity"
+                       RelativePanel.AlignHorizontalCenterWithPanel="True"
+                       FontSize="24"/>
+            <TextBlock Name="flTimeUpdated"
+                       Text="Initial Update"
+                       RelativePanel.Below="flCondition"
+                       RelativePanel.AlignHorizontalCenterWithPanel="True"
+                       FontSize="16"/>
+
+        </RelativePanel>
+        <RelativePanel Name="Colorado" Grid.Column="1" Loaded="Colorado_Loaded">
+            <RelativePanel.Background>
+                <ImageBrush ImageSource="Assets/weather/13d.png" Stretch="UniformToFill"/>
+            </RelativePanel.Background>
+            
+            <Rectangle RelativePanel.AlignHorizontalCenterWithPanel="True" 
+                       RelativePanel.AlignVerticalCenterWithPanel="True" 
+                       RelativePanel.AlignTopWithPanel="True"
+                       RelativePanel.AlignBottomWithPanel="True"
+                       RelativePanel.AlignLeftWithPanel="True"
+                       RelativePanel.AlignRightWithPanel="True"
+                       MinWidth="100"
+                       Fill="WhiteSmoke"
+                       Opacity=".4"
+                       Margin="50,150,50,150" />
+
+            <TextBlock Name="coName"
+                       RelativePanel.AlignHorizontalCenterWithPanel="True"
+                       RelativePanel.AlignVerticalCenterWithPanel="True"
+                       Margin="0,-150,0,0"
+                       Text="Colorado Springs" FontSize="32" FontWeight="Bold" />
+
+            <TextBlock Name="coTemp"
+                       Text="Temperature"
+                       RelativePanel.Below="coName"
+                       RelativePanel.AlignHorizontalCenterWithPanel="True"
+                       FontSize="24"/>
+            <TextBlock Name="coHumidity"
+                       Text="Humidity"
+                       RelativePanel.Below="coTemp"
+                       RelativePanel.AlignHorizontalCenterWithPanel="True"
+                       FontSize="24"/>
+            <TextBlock Name="coCondition"
+                       Text="idk sunny maybe?"
+                       RelativePanel.Below="coHumidity"
+                       RelativePanel.AlignHorizontalCenterWithPanel="True"
+                       FontSize="24"/>
+            <TextBlock Name="coTimeUpdated"
+                       Text="Initial Update"
+                       FontSize="16"
+                       RelativePanel.Below="coCondition"
+                       RelativePanel.AlignHorizontalCenterWithPanel="True"/>
+        </RelativePanel>
 
     </Grid>
 </Page>

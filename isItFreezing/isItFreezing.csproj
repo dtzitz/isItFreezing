@@ -95,9 +95,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FrozenLight.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OpenWeatherProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +109,34 @@
     <None Include="isItFreezing_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Colorado\01d.png" />
+    <Content Include="Assets\Colorado\01n.png" />
+    <Content Include="Assets\Colorado\02d.png" />
+    <Content Include="Assets\Colorado\03d.png" />
+    <Content Include="Assets\Colorado\03n.png" />
+    <Content Include="Assets\Colorado\04d.png" />
+    <Content Include="Assets\Colorado\04n.png" />
+    <Content Include="Assets\Colorado\09d.png" />
+    <Content Include="Assets\Colorado\10d.png" />
+    <Content Include="Assets\Colorado\10n.png" />
+    <Content Include="Assets\Colorado\11d.png" />
+    <Content Include="Assets\Colorado\11n.png" />
+    <Content Include="Assets\Colorado\13d.png" />
+    <Content Include="Assets\Colorado\13n.png" />
+    <Content Include="Assets\Colorado\50d.png" />
+    <Content Include="Assets\Colorado\50n.png" />
+    <Content Include="Assets\Florida\01d.png" />
+    <Content Include="Assets\Florida\01n.png" />
+    <Content Include="Assets\Florida\02d.png" />
+    <Content Include="Assets\Florida\02n.png" />
+    <Content Include="Assets\Florida\03d.png" />
+    <Content Include="Assets\Florida\03n.png" />
+    <Content Include="Assets\Florida\04d.png" />
+    <Content Include="Assets\Florida\04n.png" />
+    <Content Include="Assets\Florida\09d.png" />
+    <Content Include="Assets\Florida\10n.png" />
+    <Content Include="Assets\Florida\13d.png" />
+    <Content Include="Assets\Florida\13n.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -131,6 +161,7 @@
       <Version>6.0.4</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
