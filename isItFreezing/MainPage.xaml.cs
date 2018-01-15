@@ -34,12 +34,12 @@ namespace isItFreezing
             
         }
 
-        private int DELETEME = 35;
+        private bool isColoradoFreezing;
+        private bool isFloridaFreezing;
 
         private const int LED_PIN = 5;
         public GpioPin pin;
         private GpioPinValue pinValue;
-        private bool isLightOn;
 
         private void InitGPIO()
         {
@@ -82,17 +82,29 @@ namespace isItFreezing
             TimeSpan period = TimeSpan.FromMinutes(5);
             ThreadPoolTimer PerodicTimer = ThreadPoolTimer.CreatePeriodicTimer(async (Florida_Loaded) => {
                 myWeather = await OpenWeatherMapProxy.GetWeatherAsync(zipcode);
-                
-                if ((int)myWeather.main.temp <= 32 && pinValue == GpioPinValue.High)
+                int _flCurrentTemp = (int)myWeather.main.temp;
+                if (_flCurrentTemp <= 32)
+                {
+                    isFloridaFreezing = true;
+                }
+                else
+                {
+                    isFloridaFreezing = false;
+                }
+
+                if (isFloridaFreezing && pinValue == GpioPinValue.High)
                 {
                     pinValue = GpioPinValue.Low;
                     pin.Write(pinValue);
                 }
-                if ((int)myWeather.main.temp > 32 && pinValue == GpioPinValue.Low)
+                if (!isFloridaFreezing && pinValue == GpioPinValue.Low)
                 {
+                    if (!isColoradoFreezing)
+                    {
+                        pinValue = GpioPinValue.High;
+                        pin.Write(pinValue);
+                    }
                     
-                    pinValue = GpioPinValue.High;
-                    pin.Write(pinValue);
                 }
                 
 
@@ -139,21 +151,33 @@ namespace isItFreezing
             coHumidity.Text = "Humidity: " + (coWeather.main.humidity).ToString();
             coCondition.Text = coWeather.weather[0].description;
 
-            //Refresh timer
-            TimeSpan period = TimeSpan.FromMinutes(5);
+            //Colorado timer
+            TimeSpan period = TimeSpan.FromMinutes(9);
             ThreadPoolTimer PerodicTimer = ThreadPoolTimer.CreatePeriodicTimer(async (Colorado_loaded) => {
                 coWeather = await OpenWeatherMapProxy.GetWeatherAsync(zipcode);
+                int _coCurrentTemp = (int)coWeather.main.temp;
 
-                if ((int)coWeather.main.temp <= 32 && pinValue == GpioPinValue.High)
+                if (_coCurrentTemp <= 32)
+                {
+                    isColoradoFreezing = true;
+                }
+                else
+                {
+                    isColoradoFreezing = false;
+                }
+
+                if (isColoradoFreezing && pinValue == GpioPinValue.High)
                 {
                     pinValue = GpioPinValue.Low;
                     pin.Write(pinValue);
                 }
-                if ((int)coWeather.main.temp > 32 && pinValue == GpioPinValue.Low)
+                if (!isColoradoFreezing && pinValue == GpioPinValue.Low)
                 {
-
-                    pinValue = GpioPinValue.High;
-                    pin.Write(pinValue);
+                    if (!isFloridaFreezing)
+                    {
+                        pinValue = GpioPinValue.High;
+                        pin.Write(pinValue);
+                    }
                 }
 
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
