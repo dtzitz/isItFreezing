@@ -34,14 +34,19 @@
             <TextBlock Name="flTemp"
                        RelativePanel.Below="flName"
                        RelativePanel.AlignHorizontalCenterWithPanel="True" FontSize="24"/>
-            <TextBlock Name="flHumidity"
-                       Text="Humidity"
+            <TextBlock Name="flSunrise"
+                       Text="Sunrise: "
                        RelativePanel.Below="flTemp"
+                       RelativePanel.AlignHorizontalCenterWithPanel="True"
+                       FontSize="24"/>
+            <TextBlock Name="flSunset"
+                       Text="Sunset: "
+                       RelativePanel.Below="flSunrise"
                        RelativePanel.AlignHorizontalCenterWithPanel="True"
                        FontSize="24"/>
             <TextBlock Name="flCondition"
                        Text="idk gross maybe?"
-                       RelativePanel.Below="flHumidity"
+                       RelativePanel.Below="flSunset"
                        RelativePanel.AlignHorizontalCenterWithPanel="True"
                        FontSize="24"/>
             <TextBlock Name="flTimeUpdated"
@@ -78,14 +83,20 @@
                        RelativePanel.Below="coName"
                        RelativePanel.AlignHorizontalCenterWithPanel="True"
                        FontSize="24"/>
-            <TextBlock Name="coHumidity"
-                       Text="Humidity"
+            <TextBlock Name="coSunrise"
+                       Text="Sunrise: "
                        RelativePanel.Below="coTemp"
                        RelativePanel.AlignHorizontalCenterWithPanel="True"
                        FontSize="24"/>
+            <TextBlock Name="coSunset"
+                       Text="Sunset: "
+                       RelativePanel.Below="coSunrise"
+                       RelativePanel.AlignHorizontalCenterWithPanel="True"
+                       FontSize="24"/>
+            
             <TextBlock Name="coCondition"
                        Text="idk sunny maybe?"
-                       RelativePanel.Below="coHumidity"
+                       RelativePanel.Below="coSunset"
                        RelativePanel.AlignHorizontalCenterWithPanel="True"
                        FontSize="24"/>
             <TextBlock Name="coTimeUpdated"

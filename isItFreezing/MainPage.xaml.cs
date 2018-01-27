@@ -36,6 +36,7 @@ namespace isItFreezing
 
         private bool isColoradoFreezing;
         private bool isFloridaFreezing;
+        private bool isPiConnected = true;
 
         private const int LED_PIN = 5;
         public GpioPin pin;
@@ -48,7 +49,7 @@ namespace isItFreezing
             // Show an error if there is no GPIO controller
             if (gpio == null)
             {
-                //uhh
+                isPiConnected = false;
                 return;
             }
 
@@ -75,38 +76,48 @@ namespace isItFreezing
             //weather info
             flName.Text = myWeather.name;
             flTemp.Text = "Temp: " + ((int)myWeather.main.temp).ToString()+ " F";
-            flHumidity.Text = "Humidity: " + (myWeather.main.humidity).ToString();
             flCondition.Text = myWeather.weather[0].description;
+
+            //sunrise and sunset
+            var sunrise = DateTimeOffset.FromUnixTimeSeconds(myWeather.sys.sunrise);
+            sunrise += TimeSpan.FromHours(-5);
+            var sunset = DateTimeOffset.FromUnixTimeSeconds(myWeather.sys.sunset);
+            sunset += TimeSpan.FromHours(-5);
+            flSunrise.Text = "sunrise: " + sunrise.ToString("hh':'mm") + " AM" ;
+            flSunset.Text = "sunset: " + sunset.ToString("hh':'mm") + " PM";
 
             //Florida Timer
             TimeSpan period = TimeSpan.FromMinutes(5);
             ThreadPoolTimer PerodicTimer = ThreadPoolTimer.CreatePeriodicTimer(async (Florida_Loaded) => {
                 myWeather = await OpenWeatherMapProxy.GetWeatherAsync(zipcode);
-                int _flCurrentTemp = (int)myWeather.main.temp;
-                if (_flCurrentTemp <= 32)
+                if (isPiConnected)
                 {
-                    isFloridaFreezing = true;
-                }
-                else
-                {
-                    isFloridaFreezing = false;
-                }
-
-                if (isFloridaFreezing && pinValue == GpioPinValue.High)
-                {
-                    pinValue = GpioPinValue.Low;
-                    pin.Write(pinValue);
-                }
-                if (!isFloridaFreezing && pinValue == GpioPinValue.Low)
-                {
-                    if (!isColoradoFreezing)
+                    int _flCurrentTemp = (int)myWeather.main.temp;
+                    if (_flCurrentTemp <= 32)
                     {
-                        pinValue = GpioPinValue.High;
+                        isFloridaFreezing = true;
+                    }
+                    else
+                    {
+                        isFloridaFreezing = false;
+                    }
+
+                    if (isFloridaFreezing && pinValue == GpioPinValue.High)
+                    {
+                        pinValue = GpioPinValue.Low;
                         pin.Write(pinValue);
                     }
-                    
+                    if (!isFloridaFreezing && pinValue == GpioPinValue.Low)
+                    {
+                        if (!isColoradoFreezing)
+                        {
+                            pinValue = GpioPinValue.High;
+                            pin.Write(pinValue);
+                        }
+
+                    }
+
                 }
-                
 
 
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
@@ -122,7 +133,6 @@ namespace isItFreezing
                     //weather info
                     flName.Text = myWeather.name;
                     flTemp.Text = "Temp: " + ((int)myWeather.main.temp).ToString() + " F";
-                    flHumidity.Text = "Humidity: " + (myWeather.main.humidity).ToString();
                     flCondition.Text = myWeather.weather[0].description;
                     flTimeUpdated.Text = "Last Updated on: " + DateTime.Now.ToShortTimeString();
 
@@ -148,35 +158,45 @@ namespace isItFreezing
             //weather info
             coName.Text = coWeather.name;
             coTemp.Text = "Temp: " + ((int)coWeather.main.temp).ToString() + " F";
-            coHumidity.Text = "Humidity: " + (coWeather.main.humidity).ToString();
             coCondition.Text = coWeather.weather[0].description;
+
+            //sunrise and sunset
+            var sunrise = DateTimeOffset.FromUnixTimeSeconds(coWeather.sys.sunrise);
+            sunrise += TimeSpan.FromHours(-7);
+            var sunset = DateTimeOffset.FromUnixTimeSeconds(coWeather.sys.sunset);
+            sunset += TimeSpan.FromHours(-7);
+            coSunrise.Text = "sunrise: " + sunrise.ToString("hh':'mm") + " AM";
+            coSunset.Text = "sunset: " + sunset.ToString("hh':'mm") + " PM";
 
             //Colorado timer
             TimeSpan period = TimeSpan.FromMinutes(9);
             ThreadPoolTimer PerodicTimer = ThreadPoolTimer.CreatePeriodicTimer(async (Colorado_loaded) => {
                 coWeather = await OpenWeatherMapProxy.GetWeatherAsync(zipcode);
-                int _coCurrentTemp = (int)coWeather.main.temp;
 
-                if (_coCurrentTemp <= 32)
+                if (isPiConnected)
                 {
-                    isColoradoFreezing = true;
-                }
-                else
-                {
-                    isColoradoFreezing = false;
-                }
-
-                if (isColoradoFreezing && pinValue == GpioPinValue.High)
-                {
-                    pinValue = GpioPinValue.Low;
-                    pin.Write(pinValue);
-                }
-                if (!isColoradoFreezing && pinValue == GpioPinValue.Low)
-                {
-                    if (!isFloridaFreezing)
+                    int _coCurrentTemp = (int)coWeather.main.temp;
+                    if (_coCurrentTemp <= 32)
                     {
-                        pinValue = GpioPinValue.High;
+                        isColoradoFreezing = true;
+                    }
+                    else
+                    {
+                        isColoradoFreezing = false;
+                    }
+
+                    if (isColoradoFreezing && pinValue == GpioPinValue.High)
+                    {
+                        pinValue = GpioPinValue.Low;
                         pin.Write(pinValue);
+                    }
+                    if (!isColoradoFreezing && pinValue == GpioPinValue.Low)
+                    {
+                        if (!isFloridaFreezing)
+                        {
+                            pinValue = GpioPinValue.High;
+                            pin.Write(pinValue);
+                        }
                     }
                 }
 
@@ -192,7 +212,6 @@ namespace isItFreezing
                     //weather info
                     coName.Text = coWeather.name;
                     coTemp.Text = "Temp: " + ((int)coWeather.main.temp).ToString() + " F";
-                    coHumidity.Text = "Humidity: " + (coWeather.main.humidity).ToString();
                     coCondition.Text = coWeather.weather[0].description;
                     coTimeUpdated.Text = "Last Updated on: " + DateTime.Now.ToShortTimeString() + " | Colorado Time: " + DateTime.Now.AddHours(-2).ToShortTimeString();
 
