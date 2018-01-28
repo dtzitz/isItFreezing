@@ -87,9 +87,10 @@ namespace isItFreezing
             flSunset.Text = "sunset: " + sunset.ToString("hh':'mm") + " PM";
 
             //Florida Timer
-            TimeSpan period = TimeSpan.FromMinutes(5);
+            TimeSpan period = TimeSpan.FromMinutes(10);
             ThreadPoolTimer PerodicTimer = ThreadPoolTimer.CreatePeriodicTimer(async (Florida_Loaded) => {
                 myWeather = await OpenWeatherMapProxy.GetWeatherAsync(zipcode);
+
                 if (isPiConnected)
                 {
                     int _flCurrentTemp = (int)myWeather.main.temp;
@@ -136,6 +137,14 @@ namespace isItFreezing
                     flCondition.Text = myWeather.weather[0].description;
                     flTimeUpdated.Text = "Last Updated on: " + DateTime.Now.ToShortTimeString();
 
+                    //sunrise and sunset
+                    sunrise = DateTimeOffset.FromUnixTimeSeconds(myWeather.sys.sunrise);
+                    sunrise += TimeSpan.FromHours(-5);
+                    sunset = DateTimeOffset.FromUnixTimeSeconds(myWeather.sys.sunset);
+                    sunset += TimeSpan.FromHours(-5);
+                    flSunrise.Text = "sunrise: " + sunrise.ToString("hh':'mm") + " AM";
+                    flSunset.Text = "sunset: " + sunset.ToString("hh':'mm") + " PM";
+
                 });
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             }, period);
@@ -169,7 +178,7 @@ namespace isItFreezing
             coSunset.Text = "sunset: " + sunset.ToString("hh':'mm") + " PM";
 
             //Colorado timer
-            TimeSpan period = TimeSpan.FromMinutes(9);
+            TimeSpan period = TimeSpan.FromMinutes(20);
             ThreadPoolTimer PerodicTimer = ThreadPoolTimer.CreatePeriodicTimer(async (Colorado_loaded) => {
                 coWeather = await OpenWeatherMapProxy.GetWeatherAsync(zipcode);
 
@@ -214,6 +223,14 @@ namespace isItFreezing
                     coTemp.Text = "Temp: " + ((int)coWeather.main.temp).ToString() + " F";
                     coCondition.Text = coWeather.weather[0].description;
                     coTimeUpdated.Text = "Last Updated on: " + DateTime.Now.ToShortTimeString() + " | Colorado Time: " + DateTime.Now.AddHours(-2).ToShortTimeString();
+
+                    //sunrise and sunset
+                    sunrise = DateTimeOffset.FromUnixTimeSeconds(coWeather.sys.sunrise);
+                    sunrise += TimeSpan.FromHours(-7);
+                    sunset = DateTimeOffset.FromUnixTimeSeconds(coWeather.sys.sunset);
+                    sunset += TimeSpan.FromHours(-7);
+                    coSunrise.Text = "sunrise: " + sunrise.ToString("hh':'mm") + " AM";
+                    coSunset.Text = "sunset: " + sunset.ToString("hh':'mm") + " PM";
 
                 });
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
