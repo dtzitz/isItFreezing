@@ -37,6 +37,7 @@ namespace isItFreezing
         private bool isColoradoFreezing;
         private bool isFloridaFreezing;
         private bool isPiConnected = true;
+        private bool isSourKrautAwake = false;
 
         private const int LED_PIN = 5;
         public GpioPin pin;
@@ -91,7 +92,13 @@ namespace isItFreezing
             ThreadPoolTimer PerodicTimer = ThreadPoolTimer.CreatePeriodicTimer(async (Florida_Loaded) => {
                 myWeather = await OpenWeatherMapProxy.GetWeatherAsync(zipcode);
 
-                if (isPiConnected)
+                var moment = DateTime.Now;
+                if (moment.Hour > 22 || moment.Hour < 6)
+                {
+                    isSourKrautAwake = true;
+                }
+
+                if (isPiConnected && !isSourKrautAwake)
                 {
                     int _flCurrentTemp = (int)myWeather.main.temp;
                     if (_flCurrentTemp <= 32)
@@ -182,7 +189,13 @@ namespace isItFreezing
             ThreadPoolTimer PerodicTimer = ThreadPoolTimer.CreatePeriodicTimer(async (Colorado_loaded) => {
                 coWeather = await OpenWeatherMapProxy.GetWeatherAsync(zipcode);
 
-                if (isPiConnected)
+                var moment = DateTime.Now;
+                if (moment.Hour > 22 || moment.Hour < 6)
+                {
+                    isSourKrautAwake = true;
+                }
+
+                if (isPiConnected && !isSourKrautAwake)
                 {
                     int _coCurrentTemp = (int)coWeather.main.temp;
                     if (_coCurrentTemp <= 32)
