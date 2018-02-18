@@ -50,7 +50,7 @@ namespace isItFreezing
             // Show an error if there is no GPIO controller
             if (gpio == null)
             {
-                isPiConnected = false;
+                //isPiConnected = false;
                 return;
             }
 
@@ -93,9 +93,13 @@ namespace isItFreezing
                 myWeather = await OpenWeatherMapProxy.GetWeatherAsync(zipcode);
 
                 var moment = DateTime.Now;
-                if (moment.Hour > 22 || moment.Hour < 6)
+                if (moment.Hour > 22 || moment.Hour < 5)
                 {
                     isSourKrautAwake = true;
+                }
+                else
+                {
+                    isSourKrautAwake = false;
                 }
 
                 if (isPiConnected && !isSourKrautAwake)
@@ -194,7 +198,10 @@ namespace isItFreezing
                 {
                     isSourKrautAwake = true;
                 }
-
+                else
+                {
+                    isSourKrautAwake = false;
+                }
                 if (isPiConnected && !isSourKrautAwake)
                 {
                     int _coCurrentTemp = (int)coWeather.main.temp;
