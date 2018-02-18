@@ -34,14 +34,14 @@ namespace isItFreezing
             
         }
 
-        private bool isColoradoFreezing;
-        private bool isFloridaFreezing;
+        public bool isColoradoFreezing;
+        public bool isFloridaFreezing;
         private bool isPiConnected = true;
         private bool isSourKrautAwake = false;
 
-        private const int LED_PIN = 5;
+        public const int LED_PIN = 5;
         public GpioPin pin;
-        private GpioPinValue pinValue;
+        public GpioPinValue pinValue;
 
         private void InitGPIO()
         {
@@ -50,7 +50,7 @@ namespace isItFreezing
             // Show an error if there is no GPIO controller
             if (gpio == null)
             {
-                //isPiConnected = false;
+                isPiConnected = false;
                 return;
             }
 
@@ -88,7 +88,7 @@ namespace isItFreezing
             flSunset.Text = "sunset: " + sunset.ToString("hh':'mm") + " PM";
 
             //Florida Timer
-            TimeSpan period = TimeSpan.FromMinutes(10);
+            TimeSpan period = TimeSpan.FromMinutes(7);
             ThreadPoolTimer PerodicTimer = ThreadPoolTimer.CreatePeriodicTimer(async (Florida_Loaded) => {
                 myWeather = await OpenWeatherMapProxy.GetWeatherAsync(zipcode);
 
@@ -105,30 +105,7 @@ namespace isItFreezing
                 if (isPiConnected && !isSourKrautAwake)
                 {
                     int _flCurrentTemp = (int)myWeather.main.temp;
-                    if (_flCurrentTemp <= 32)
-                    {
-                        isFloridaFreezing = true;
-                    }
-                    else
-                    {
-                        isFloridaFreezing = false;
-                    }
-
-                    if (isFloridaFreezing && pinValue == GpioPinValue.High)
-                    {
-                        pinValue = GpioPinValue.Low;
-                        pin.Write(pinValue);
-                    }
-                    if (!isFloridaFreezing && pinValue == GpioPinValue.Low)
-                    {
-                        if (!isColoradoFreezing)
-                        {
-                            pinValue = GpioPinValue.High;
-                            pin.Write(pinValue);
-                        }
-
-                    }
-
+                    ToggleLight.checkTemp(_flCurrentTemp, isFloridaFreezing, isColoradoFreezing, pinValue, pin);
                 }
 
 
@@ -189,7 +166,7 @@ namespace isItFreezing
             coSunset.Text = "sunset: " + sunset.ToString("hh':'mm") + " PM";
 
             //Colorado timer
-            TimeSpan period = TimeSpan.FromMinutes(20);
+            TimeSpan period = TimeSpan.FromMinutes(19);
             ThreadPoolTimer PerodicTimer = ThreadPoolTimer.CreatePeriodicTimer(async (Colorado_loaded) => {
                 coWeather = await OpenWeatherMapProxy.GetWeatherAsync(zipcode);
 
@@ -205,28 +182,7 @@ namespace isItFreezing
                 if (isPiConnected && !isSourKrautAwake)
                 {
                     int _coCurrentTemp = (int)coWeather.main.temp;
-                    if (_coCurrentTemp <= 32)
-                    {
-                        isColoradoFreezing = true;
-                    }
-                    else
-                    {
-                        isColoradoFreezing = false;
-                    }
-
-                    if (isColoradoFreezing && pinValue == GpioPinValue.High)
-                    {
-                        pinValue = GpioPinValue.Low;
-                        pin.Write(pinValue);
-                    }
-                    if (!isColoradoFreezing && pinValue == GpioPinValue.Low)
-                    {
-                        if (!isFloridaFreezing)
-                        {
-                            pinValue = GpioPinValue.High;
-                            pin.Write(pinValue);
-                        }
-                    }
+                    ToggleLight.checkTemp(_coCurrentTemp, isFloridaFreezing, isColoradoFreezing, pinValue, pin);
                 }
 
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
