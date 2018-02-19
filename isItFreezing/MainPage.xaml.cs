@@ -36,6 +36,8 @@ namespace isItFreezing
 
         public bool isColoradoFreezing;
         public bool isFloridaFreezing;
+        public string flBackgroundIcon;
+        public string clBackgroundIcon;
         private bool isPiConnected = true;
         private bool isSourKrautAwake = false;
 
@@ -68,7 +70,8 @@ namespace isItFreezing
             RootObject myWeather = await OpenWeatherMapProxy.GetWeatherAsync(zipcode);
 
             //make the background
-            string flWeatherIcon = String.Format("ms-appx:///Assets/Florida/{0}.png", myWeather.weather[0].icon);
+            flBackgroundIcon = myWeather.weather[0].icon;
+            string flWeatherIcon = String.Format("ms-appx:///Assets/Florida/{0}.png", flBackgroundIcon);
             ImageBrush ib = new ImageBrush();
             ib.ImageSource = new BitmapImage(new Uri(flWeatherIcon, UriKind.Absolute));
             ib.Stretch = Stretch.UniformToFill;
@@ -87,10 +90,18 @@ namespace isItFreezing
             flSunrise.Text = "sunrise: " + sunrise.ToString("hh':'mm") + " AM" ;
             flSunset.Text = "sunset: " + sunset.ToString("hh':'mm") + " PM";
 
+            //toggle light
+            if (isPiConnected && !isSourKrautAwake)
+            {
+                int _flCurrentTemp = (int)myWeather.main.temp;
+                ToggleLight.checkTemp(_flCurrentTemp, isFloridaFreezing, isColoradoFreezing, pinValue, pin);
+            }
+
             //Florida Timer
-            TimeSpan period = TimeSpan.FromMinutes(7);
+            TimeSpan period = TimeSpan.FromMinutes(10);
             ThreadPoolTimer PerodicTimer = ThreadPoolTimer.CreatePeriodicTimer(async (Florida_Loaded) => {
                 myWeather = await OpenWeatherMapProxy.GetWeatherAsync(zipcode);
+                string newflBackgroundIcon = myWeather.weather[0].icon;
 
                 var moment = DateTime.Now;
                 if (moment.Hour > 22 || moment.Hour < 5)
@@ -113,11 +124,15 @@ namespace isItFreezing
                 Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.High, () => {
 
 
-                    //make the background
-                    flWeatherIcon = String.Format("ms-appx:///Assets/Florida/{0}.png", myWeather.weather[0].icon);
-                    ib.ImageSource = new BitmapImage(new Uri(flWeatherIcon, UriKind.Absolute));
-                    ib.Stretch = Stretch.UniformToFill;
-                    Florida.Background = ib;
+                    //remake the background if it changes
+                    if (newflBackgroundIcon != flBackgroundIcon)
+                    {
+                        flBackgroundIcon = newflBackgroundIcon;
+                        flWeatherIcon = String.Format("ms-appx:///Assets/Florida/{0}.png", flBackgroundIcon);
+                        ib.ImageSource = new BitmapImage(new Uri(flWeatherIcon, UriKind.Absolute));
+                        ib.Stretch = Stretch.UniformToFill;
+                        Florida.Background = ib;
+                    }
 
                     //weather info
                     flName.Text = myWeather.name;
@@ -146,7 +161,8 @@ namespace isItFreezing
             RootObject coWeather = await OpenWeatherMapProxy.GetWeatherAsync(zipcode);
 
             //make the background
-            string coWeatherIcon = String.Format("ms-appx:///Assets/Colorado/{0}.png", coWeather.weather[0].icon);
+            string coBackgroundIcon = coWeather.weather[0].icon;
+            string coWeatherIcon = String.Format("ms-appx:///Assets/Colorado/{0}.png", coBackgroundIcon);
             ImageBrush ib = new ImageBrush();
             ib.ImageSource = new BitmapImage(new Uri(coWeatherIcon, UriKind.Absolute));
             ib.Stretch = Stretch.UniformToFill;
@@ -165,10 +181,18 @@ namespace isItFreezing
             coSunrise.Text = "sunrise: " + sunrise.ToString("hh':'mm") + " AM";
             coSunset.Text = "sunset: " + sunset.ToString("hh':'mm") + " PM";
 
+            //toggle light
+            if (isPiConnected && !isSourKrautAwake)
+            {
+                int _coCurrentTemp = (int)coWeather.main.temp;
+                ToggleLight.checkTemp(_coCurrentTemp, isFloridaFreezing, isColoradoFreezing, pinValue, pin);
+            }
+
             //Colorado timer
-            TimeSpan period = TimeSpan.FromMinutes(19);
+            TimeSpan period = TimeSpan.FromMinutes(20);
             ThreadPoolTimer PerodicTimer = ThreadPoolTimer.CreatePeriodicTimer(async (Colorado_loaded) => {
                 coWeather = await OpenWeatherMapProxy.GetWeatherAsync(zipcode);
+                string newCoBackgroundIcon = coWeather.weather[0].icon;
 
                 var moment = DateTime.Now;
                 if (moment.Hour > 22 || moment.Hour < 6)
@@ -188,11 +212,15 @@ namespace isItFreezing
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.High, () => {
 
-                    //make the background
-                    coWeatherIcon = String.Format("ms-appx:///Assets/Colorado/{0}.png", coWeather.weather[0].icon);
-                    ib.ImageSource = new BitmapImage(new Uri(coWeatherIcon, UriKind.Absolute));
-                    ib.Stretch = Stretch.UniformToFill;
-                    Colorado.Background = ib;
+                    //remake the background if it changes
+                    if (newCoBackgroundIcon != coBackgroundIcon)
+                    {
+                        coBackgroundIcon = newCoBackgroundIcon;
+                        coWeatherIcon = String.Format("ms-appx:///Assets/Colorado/{0}.png", coBackgroundIcon);
+                        ib.ImageSource = new BitmapImage(new Uri(coWeatherIcon, UriKind.Absolute));
+                        ib.Stretch = Stretch.UniformToFill;
+                        Colorado.Background = ib;
+                    }
 
                     //weather info
                     coName.Text = coWeather.name;

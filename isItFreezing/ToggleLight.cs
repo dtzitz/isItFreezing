@@ -11,7 +11,6 @@ namespace isItFreezing
     {
         public static void checkTemp(int temperature, bool isFloridaFreezing, bool isColoradoFreezing, GpioPinValue pinValue, GpioPin pin)
         {
-            temperature = 32;
             if (temperature <= 32)
             {
                 isFloridaFreezing = true;
