@@ -94,7 +94,7 @@ namespace isItFreezing
             if (isPiConnected && !isSourKrautAwake)
             {
                 int _flCurrentTemp = (int)myWeather.main.temp;
-                ToggleLight.checkTemp(_flCurrentTemp, isFloridaFreezing, isColoradoFreezing, pinValue, pin);
+                ToggleLight.checkTemp(_flCurrentTemp, zipcode, isFloridaFreezing, isColoradoFreezing, pinValue, pin);
             }
 
             //Florida Timer
@@ -116,7 +116,7 @@ namespace isItFreezing
                 if (isPiConnected && !isSourKrautAwake)
                 {
                     int _flCurrentTemp = (int)myWeather.main.temp;
-                    ToggleLight.checkTemp(_flCurrentTemp, isFloridaFreezing, isColoradoFreezing, pinValue, pin);
+                    ToggleLight.checkTemp(_flCurrentTemp, zipcode, isFloridaFreezing, isColoradoFreezing, pinValue, pin);
                 }
 
 
@@ -185,7 +185,7 @@ namespace isItFreezing
             if (isPiConnected && !isSourKrautAwake)
             {
                 int _coCurrentTemp = (int)coWeather.main.temp;
-                ToggleLight.checkTemp(_coCurrentTemp, isFloridaFreezing, isColoradoFreezing, pinValue, pin);
+                ToggleLight.checkTemp(_coCurrentTemp, zipcode, isFloridaFreezing, isColoradoFreezing, pinValue, pin);
             }
 
             //Colorado timer
@@ -203,10 +203,11 @@ namespace isItFreezing
                 {
                     isSourKrautAwake = false;
                 }
+
                 if (isPiConnected && !isSourKrautAwake)
                 {
                     int _coCurrentTemp = (int)coWeather.main.temp;
-                    ToggleLight.checkTemp(_coCurrentTemp, isFloridaFreezing, isColoradoFreezing, pinValue, pin);
+                    ToggleLight.checkTemp(_coCurrentTemp, zipcode, isFloridaFreezing, isColoradoFreezing, pinValue, pin);
                 }
 
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
