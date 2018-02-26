@@ -38,8 +38,9 @@ namespace isItFreezing
         public bool isFloridaFreezing;
         public string flBackgroundIcon;
         public string clBackgroundIcon;
-        private bool isPiConnected = true;
-        private bool isSourKrautAwake = false;
+        public bool isPiConnected = true;
+        public bool isSourKrautAwake = false;
+        
 
         public const int LED_PIN = 5;
         public GpioPin pin;
@@ -91,10 +92,10 @@ namespace isItFreezing
             flSunset.Text = "sunset: " + sunset.ToString("hh':'mm") + " PM";
 
             //toggle light
-            if (isPiConnected && !isSourKrautAwake)
+            if (isPiConnected)
             {
                 int _flCurrentTemp = (int)myWeather.main.temp;
-                ToggleLight.checkTemp(_flCurrentTemp, zipcode, isFloridaFreezing, isColoradoFreezing, pinValue, pin);
+                ToggleLight.checkTemp(_flCurrentTemp, zipcode, isSourKrautAwake, ref isFloridaFreezing, ref isColoradoFreezing, ref pinValue, pin);
             }
 
             //Florida Timer
@@ -113,10 +114,10 @@ namespace isItFreezing
                     isSourKrautAwake = false;
                 }
 
-                if (isPiConnected && !isSourKrautAwake)
+                if (isPiConnected)
                 {
                     int _flCurrentTemp = (int)myWeather.main.temp;
-                    ToggleLight.checkTemp(_flCurrentTemp, zipcode, isFloridaFreezing, isColoradoFreezing, pinValue, pin);
+                    ToggleLight.checkTemp(_flCurrentTemp, zipcode, isSourKrautAwake, ref isFloridaFreezing, ref isColoradoFreezing, ref pinValue, pin);
                 }
 
 
@@ -182,10 +183,10 @@ namespace isItFreezing
             coSunset.Text = "sunset: " + sunset.ToString("hh':'mm") + " PM";
 
             //toggle light
-            if (isPiConnected && !isSourKrautAwake)
+            if (isPiConnected)
             {
                 int _coCurrentTemp = (int)coWeather.main.temp;
-                ToggleLight.checkTemp(_coCurrentTemp, zipcode, isFloridaFreezing, isColoradoFreezing, pinValue, pin);
+                ToggleLight.checkTemp(_coCurrentTemp, zipcode, isSourKrautAwake, ref isFloridaFreezing, ref isColoradoFreezing, ref pinValue, pin);
             }
 
             //Colorado timer
@@ -204,10 +205,10 @@ namespace isItFreezing
                     isSourKrautAwake = false;
                 }
 
-                if (isPiConnected && !isSourKrautAwake)
+                if (isPiConnected)
                 {
                     int _coCurrentTemp = (int)coWeather.main.temp;
-                    ToggleLight.checkTemp(_coCurrentTemp, zipcode, isFloridaFreezing, isColoradoFreezing, pinValue, pin);
+                    ToggleLight.checkTemp(_coCurrentTemp, zipcode, isSourKrautAwake, ref isFloridaFreezing, ref isColoradoFreezing, ref pinValue, pin);
                 }
 
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed

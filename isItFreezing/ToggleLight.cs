@@ -9,7 +9,7 @@ namespace isItFreezing
 {
     class ToggleLight
     {
-        public static void checkTemp(int temperature, int zipcode, bool isFloridaFreezing, bool isColoradoFreezing, GpioPinValue pinValue, GpioPin pin)
+        public static void checkTemp(int temperature, int zipcode, bool isSourKrautAwake, ref bool isFloridaFreezing, ref bool isColoradoFreezing, ref GpioPinValue pinValue, GpioPin pin)
         {
             if (temperature <= 32)
             {
@@ -27,7 +27,15 @@ namespace isItFreezing
             {
                 if (zipcode == 33709)
                 {
-                    isFloridaFreezing = false;
+                    //isFloridaFreezing = false;
+                    if (isFloridaFreezing)
+                    {
+                        isFloridaFreezing = false;
+                    }
+                    else
+                    {
+                        isFloridaFreezing = true;
+                    }
                 }
                 else
                 {
@@ -36,13 +44,26 @@ namespace isItFreezing
                 
             }
 
-            if (isFloridaFreezing || isColoradoFreezing)
+            if (!isSourKrautAwake)
             {
-                if (pinValue == GpioPinValue.High)
+                if (isFloridaFreezing || isColoradoFreezing)
                 {
-                    pinValue = GpioPinValue.Low;
+                    if (pinValue == GpioPinValue.High)
+                    {
+                        pinValue = GpioPinValue.Low;
+                        pin.Write(pinValue);
+                    }
+                }
+                else
+                {
+                    pinValue = GpioPinValue.High;
                     pin.Write(pinValue);
                 }
+            }
+            else
+            {
+                pinValue = GpioPinValue.High;
+                pin.Write(pinValue);
             }
 
         }
